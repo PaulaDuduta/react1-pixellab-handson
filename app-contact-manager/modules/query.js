@@ -11,7 +11,7 @@ export const findContacts = (needle = 'query') => {
         haystack += value;
       }
 
-      return haystack;
+      return haystack.toLowerCase();
     }, '');
 
     if (haystack.includes(needle)) {

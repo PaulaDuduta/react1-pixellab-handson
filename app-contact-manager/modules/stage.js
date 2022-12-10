@@ -5,6 +5,11 @@ import { render as renderEditContact } from './editContact.js';
 
 const stage = document.querySelector('.stage');
 
+// ---->>>HOMEWORK clear stage function <<<------
+export const clearStage = () => {
+  stage.innerHTML = '';
+};
+
 //cancel action button
 stage.addEventListener('click', (event) => {
   const { target } = event;
@@ -16,7 +21,7 @@ stage.addEventListener('click', (event) => {
     return;
   }
 
-  stage.innerHTML = ''; //clearStage();
+  clearStage();
 });
 
 // create contact
@@ -43,7 +48,7 @@ stage.addEventListener('submit', (event) => {
 
   addMessage(createMessage(`Contact ${name.value} ${surname.value} created.`));
 
-  stage.innerHTML = '';
+  clearStage();
 });
 
 //delete contact
@@ -85,7 +90,7 @@ stage.addEventListener('click', (event) => {
   const contactId = Number(parentElement.dataset.contactId);
   const contact = findContact(contactId);
 
-  stage.innerHTML = '';
+  clearStage();
 
   stage.append(renderEditContact(contact));
 });
@@ -117,7 +122,7 @@ stage.addEventListener('submit', (event) => {
   contact.phone = phone.value;
   contact.email = email.value;
 
-  stage.innerHTML = '';
+  clearStage();
   clearMessages();
   addMessage(
     createMessage(

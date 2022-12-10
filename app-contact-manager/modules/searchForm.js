@@ -3,7 +3,7 @@ import { findContacts } from './query.js';
 import createMessage from './message.js';
 import { pluralize } from './utils.js';
 import { render } from './contact.js';
-import stage from './stage.js';
+import stage, { clearStage } from './stage.js';
 
 const searchForm = document.querySelector('.search-form');
 
@@ -15,11 +15,21 @@ searchForm.addEventListener('submit', (event) => {
   const queryInput = form.q;
   const queryString = queryInput.value.trim();
 
+  // ----->>> HOMEWORK - SPACE ELIMINATION <<<<<-----
+  const contactInputArray = queryString.split(' ');
+  const contactInputSearch = contactInputArray.reduce((accumulator, value) => {
+    if (typeof value === 'string') {
+      accumulator += value;
+    }
+
+    return accumulator;
+  }, '');
+
   if (queryString.length <= 3) {
     return;
   }
 
-  const contacts = findContacts(queryString);
+  const contacts = findContacts(contactInputSearch.toLowerCase());
   const contactsCount = contacts.length;
   const fragment = document.createElement('div');
 
@@ -28,7 +38,7 @@ searchForm.addEventListener('submit', (event) => {
   });
 
   clearMessages();
-  stage.innerHTML = '';
+  clearStage();
 
   if (contactsCount < 1) {
     addMessage(createMessage('No contacts found!', 'warning'));
