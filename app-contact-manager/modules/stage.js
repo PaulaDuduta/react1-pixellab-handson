@@ -1,7 +1,14 @@
 import { addMessage, clearMessages } from './notificationBar.js';
-import { createContact, deleteContact, findContact } from './query.js';
+import {
+  createContact,
+  createPet,
+  deleteContact,
+  findContact,
+  updateContact,
+} from './query.js';
 import createMessage from './message.js';
 import { render as renderEditContact } from './editContact.js';
+import { render as renderPetForm } from './addPetForm.js';
 
 const stage = document.querySelector('.stage');
 
@@ -113,14 +120,12 @@ stage.addEventListener('submit', (event) => {
   const contactId = id.value;
   const contact = findContact(contactId);
 
-  if (contact === undefined) {
-    return;
-  }
-
-  contact.name = name.value;
-  contact.surname = surname.value;
-  contact.phone = phone.value;
-  contact.email = email.value;
+  updateContact(contactId, {
+    name: name.value,
+    surname: surname.value,
+    phone: phone.value,
+    email: email.value,
+  });
 
   clearStage();
   clearMessages();
@@ -128,6 +133,54 @@ stage.addEventListener('submit', (event) => {
     createMessage(
       `Contact ${contact.name} ${contact.surname} has been edited.`,
     ),
+  );
+});
+
+// add pet button
+stage.addEventListener('click', (event) => {
+  const { target } = event;
+
+  if (
+    target.nodeName !== 'BUTTON' ||
+    !target.classList.contains('add-pet-button')
+  ) {
+    return;
+  }
+
+  const button = target;
+  const parentElement = button.parentElement;
+  const contactId = parentElement.dataset.contactId;
+
+  clearStage();
+
+  stage.append(renderPetForm(contactId));
+});
+
+// create pet submit
+
+stage.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const { target } = event;
+
+  if (target.nodeName !== 'FORM' || !target.classList.contains('add-pet')) {
+    return;
+  }
+
+  const form = target;
+  // DOM input elements
+  const { name, species, age, contactId } = form;
+
+  createPet(contactId.value, {
+    name: name.value,
+    species: species.value,
+    age: age.value,
+    id: Number(Date.now().toString().slice(-6)),
+  });
+
+  clearStage();
+
+  addMessage(
+    createMessage(`Pet ${name.value} created for contact ${contactId.value}.`),
   );
 });
 

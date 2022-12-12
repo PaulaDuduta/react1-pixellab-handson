@@ -31,7 +31,7 @@ searchForm.addEventListener('submit', (event) => {
 
   const contacts = findContacts(contactInputSearch.toLowerCase());
   const contactsCount = contacts.length;
-  const fragment = document.createElement('div');
+  const fragment = new DocumentFragment();
 
   contacts.forEach((contact) => {
     fragment.append(render(contact));

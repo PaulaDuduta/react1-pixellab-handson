@@ -21,7 +21,7 @@ export const render = (contactId) => {
     <input type="hidden" value="${contactId}" name="contactId">
 
     <div class="mt-2">
-      <button type="submit" class="btn btn-secondary me-1" title="Save">Save</button>
+      <button type="submit" class="btn btn-secondary me-1 add-pet-submit" title="Save">Save</button>
       <button type="button" class="cancel-button btn btn-secondary" title="Cancel">Cancel</button>
     </div>
   `;

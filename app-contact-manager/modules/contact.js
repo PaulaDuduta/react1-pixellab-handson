@@ -15,7 +15,7 @@ export const render = (contact) => {
 
 <button title="Delete" class="btn btn-secondary delete-contact" type="button">Delete</button>
 <button title="Edit" class="btn btn-secondary mx-2 edit-contact-button" type="button">Edit</button>
-<button title="Add Pet" class="btn btn-secondary" type="button">Add Pet</button>
+<button title="Add Pet" class="btn btn-secondary add-pet-button" type="button">Add Pet</button>
   `;
 
   const petUl = document.createElement('ul');
