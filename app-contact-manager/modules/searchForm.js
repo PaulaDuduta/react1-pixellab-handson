@@ -13,23 +13,27 @@ searchForm.addEventListener('submit', (event) => {
   //currentTarget este elementul pe care am rulat addEventListener
   const form = event.currentTarget;
   const queryInput = form.q;
-  const queryString = queryInput.value.trim();
+  // const queryString = queryInput.value.trim();
 
-  // ----->>> HOMEWORK - SPACE ELIMINATION <<<<<-----
-  const contactInputArray = queryString.split(' ');
-  const contactInputSearch = contactInputArray.reduce((accumulator, value) => {
-    if (typeof value === 'string') {
-      accumulator += value;
-    }
+  // method 2 for space elimination
+  const queryString = queryInput.value.toLowerCase().replace(/\s/g, '').trim();
 
-    return accumulator;
-  }, '');
+  // // ----->>> HOMEWORK - SPACE ELIMINATION <<<<<-----
+  // const contactInputArray = queryString.split(' ');
+  // const contactInputSearch = contactInputArray.reduce((accumulator, value) => {
+  //   if (typeof value === 'string') {
+  //     accumulator += value;
+  //   }
 
-  if (queryString.length <= 3) {
-    return;
-  }
+  //   return accumulator;
+  // }, '');
 
-  const contacts = findContacts(contactInputSearch.toLowerCase());
+  // if (queryString.length <= 3) {
+  //   return;
+  // }
+
+  // const contacts = findContacts(contactInputSearch.toLowerCase()); //v1 of space elimination
+  const contacts = findContacts(queryString);
   const contactsCount = contacts.length;
   const fragment = new DocumentFragment();
 

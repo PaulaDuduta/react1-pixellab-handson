@@ -29,7 +29,7 @@ const person = {
 };
 
 console.warn(
-  `Folosind Object.entries() pe proprietatea skills, afiseaza abilitatile persoanei daca acestea sunt true. Folosind propozitii de forma: “person.name cunoaste: html.” “person.name cunoaste: javaScript.”`,
+  `1.Folosind Object.entries() pe proprietatea skills, afiseaza abilitatile persoanei daca acestea sunt true. Folosind propozitii de forma: “person.name cunoaste: html.” “person.name cunoaste: javaScript.”`,
 );
 // [['html', true], ['css', true], ['javascript', true]]
 
@@ -47,7 +47,7 @@ const message1 = Object.entries(person.skills)
 console.log(message1);
 
 console.warn(
-  `Prin aceeasi metoda, afiseaza o lista inversata cu numele complet inversat al prietenilor. `,
+  `2.Prin aceeasi metoda, afiseaza o lista inversata cu numele complet inversat al prietenilor. `,
 );
 Object.entries(person.friends).forEach((friendPair) => {
   const [, friend] = friendPair;
@@ -58,7 +58,7 @@ Object.entries(person.friends).forEach((friendPair) => {
 });
 
 console.warn(
-  `Afiseaza propozitia: “Prietenii mei sunt Larry, Steven si Carol.” folosind Object.entries()`,
+  `3.Afiseaza propozitia: “Prietenii mei sunt Larry, Steven si Carol.” folosind Object.entries()`,
 );
 const message2 = Object.entries(person.friends).reduce(
   (message2, friendPair, index, friends) => {
@@ -83,7 +83,7 @@ const message2 = Object.entries(person.friends).reduce(
 );
 console.log(message2);
 
-console.warn(`In mod similar afiseaza mai multe propozitii (cate una per console.log()) care sa afiseze: “Diferenta de varsta intre Larry si Dragos este de xxx ani.” etc…
+console.warn(`4.In mod similar afiseaza mai multe propozitii (cate una per console.log()) care sa afiseze: “Diferenta de varsta intre Larry si Dragos este de xxx ani.” etc…
 `);
 const friendPairs = Object.entries(person.friends);
 for (let i = 0; i < friendPairs.length; i++) {
@@ -96,3 +96,54 @@ for (let i = 0; i < friendPairs.length; i++) {
     }`,
   );
 }
+
+//TEMA
+
+console.warn(
+  `5.Folosind Object.entries() pe proprietatea skills, afiseaza toate abilitatile din obiectul skills.`,
+);
+Object.entries(person.skills).forEach((skillPair) => {
+  const [skill] = skillPair;
+
+  console.log(`${skill}`);
+});
+
+console.warn(
+  `6.Prin aceeasi metoda, afiseaza o lista cu numele complet al prietenilor.`,
+);
+Object.entries(person.friends).forEach((friendPair) => {
+  const [, friend] = friendPair;
+  const { name, surname } = friend;
+
+  console.log(`${name} ${surname}`);
+});
+
+console.warn(
+  `7.Afiseaza propozitia: “Prietenii mei sunt Larry Larryson, Steven Stevenson si Carol Carolson.” folosind Object.entries()`,
+);
+const message7 = Object.entries(person.friends).reduce(
+  (acc, friendPair, index, friends) => {
+    const [, friend] = friendPair;
+    const { name, surname } = friend;
+    let punctuation =
+      index === friends.length - 1
+        ? '.'
+        : index === friends.length - 2
+        ? ' si '
+        : ', ';
+
+    return (acc += `${name} ${surname}${punctuation}`);
+  },
+  'Prietenii mei sunt ',
+);
+console.log(message7);
+
+console.warn(
+  `8.In mod similar, afiseaza mai multe propozitii (cate una per console.log()) care sa afiseze: “Larry are xx ani. Steven are …”`,
+);
+Object.entries(person.friends).forEach((friendPair) => {
+  const [, friend] = friendPair;
+  const { name, age } = friend;
+
+  console.log(`${name} are ${age} ani.\n`);
+});

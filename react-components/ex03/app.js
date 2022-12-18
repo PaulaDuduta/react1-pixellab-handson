@@ -23,7 +23,7 @@ const person = {
 };
 
 console.warn(
-  `Folosind Object.values(), afiseaza o lista inversata cu numele complet inversat al prietenilor.`,
+  `1.Folosind Object.values(), afiseaza o lista inversata cu numele complet inversat al prietenilor.`,
 );
 const friendObjects = Object.values(person.friends);
 friendObjects.reverse().forEach(({ name, surname }) => {
@@ -31,7 +31,7 @@ friendObjects.reverse().forEach(({ name, surname }) => {
 });
 
 console.warn(
-  `.Afiseaza propozitia: “Prietenii mei sunt Larry, Steven si Carol.” folosind Object.values()`,
+  `2.Afiseaza propozitia: “Prietenii mei sunt Larry, Steven si Carol.” folosind Object.values()`,
 );
 const message1 = Object.values(person.friends).reduce(
   (message1, friend, index, friends) => {
@@ -56,7 +56,7 @@ const message1 = Object.values(person.friends).reduce(
 console.log(message1);
 
 console.warn(
-  `Prin aceeasi metoda, afiseaza propozitia: “Diferenta de varsta intre Larry si Dragos este de xxx ani.” etc…`,
+  `3.Prin aceeasi metoda, afiseaza propozitia: “Diferenta de varsta intre Larry si Dragos este de xxx ani.” etc…`,
 );
 const message2 = Object.values(person.friends).reduce(
   (message2, { name, age }, index, friends) => {
@@ -73,3 +73,50 @@ const message2 = Object.values(person.friends).reduce(
   '',
 );
 console.log(message2);
+
+// TEMA
+
+console.warn(
+  `4.Prin aceeasi metoda, afiseaza o lista cu numele complet al prietenilor (console.log / linie). `,
+);
+const message4 = Object.values(person.friends).reduce(
+  (message4, { name, surname }) => {
+    return (message4 += name + ' ' + surname + `\n`);
+  },
+  '',
+);
+console.log(message4);
+
+console.warn(
+  `5.Afiseaza propozitia: “Prietenii mei sunt Larry Larryson, Steven Stevenson si Carol Carolson.” folosind Object.values()`,
+);
+const message5 = Object.values(person.friends).reduce(
+  (message5, friend, index, friends) => {
+    const { name, surname } = friend;
+
+    let punctuation =
+      index === friends.length - 1
+        ? '.'
+        : index === friends.length - 2
+        ? ' si '
+        : ', ';
+
+    message5 += `${name} ${surname}${punctuation}`;
+    return message5;
+  },
+  'Prietenii mei sunt ',
+);
+console.log(message5);
+
+console.warn(
+  `6.In mod similar, afiseaza propozitia  “Larry are xx ani. Steven are …”`,
+);
+const message6 = Object.values(person.friends).reduce(
+  (message6, { name, age }) => {
+    message6 += `${name} are ${age} ani.\n`;
+
+    return message6;
+  },
+  '',
+);
+console.log(message6);
