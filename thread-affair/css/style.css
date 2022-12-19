@@ -250,7 +250,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: 1284px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -533,7 +533,7 @@ a {
   font-weight: 500;
 }
 
-.product-tile .product-a2c {
+.product-tile .product-control {
   background-color: transparent;
   border: 1px solid #ff6b6b;
   padding: 10px 25px;
@@ -545,7 +545,7 @@ a {
   cursor: pointer;
 }
 
-.product-tile .product-a2c:hover {
+.product-tile .product-control:hover {
   color: #fff;
   background-color: #ff6b6b;
 }
@@ -641,7 +641,13 @@ a {
   align-items: center;
   color: #fff;
   display: flex;
+  flex-wrap: wrap;
   min-height: 150px;
+}
+
+.home-newsletter .form-message {
+  width: 100%;
+  text-align: center;
 }
 
 .home-newsletter [for='field-newsletter'] {
