@@ -142,12 +142,12 @@ class AddToCartButton extends React.Component {
       <button
         onClick={this.onClick}
         type="button"
-        title={`${productInCart ? 'Remove' : 'Add'} in cart`}
-        className={`product-control ${productInCart ? 'in-cart' : ''}`}
+        title={`${productInCart ? 'Remove' : 'Add'} product to cart`}
+        className={`product-control ${productInCart ? 'added' : ''}`}
         disabled={this.state.busy}
       >
         {productInCart
-          ? `Product ${this.props.productId} already`
+          ? `Product ${this.props.productId} in cart`
           : 'Add to cart'}
         {this.state.busy ? <i className="fas fa-spinner"></i> : <></>}
       </button>
@@ -192,11 +192,11 @@ class AddToWishListButton extends React.Component {
       <button
         onClick={this.onClick}
         type="button"
-        title={`${productInWl ? 'Remove' : 'Add'} in wl`}
-        className={`product-control ${productInWl ? 'in-cart' : ''}`}
+        title={`${productInWl ? 'Remove' : 'Add'} product to wl`}
+        className={`product-control ${productInWl ? 'added' : ''}`}
         disabled={this.state.busy}
       >
-        {productInWl ? `Product ${this.props.productId} already` : 'Add to wl'}
+        {productInWl ? `Product ${this.props.productId} in wl` : 'Add to wl'}
         {this.state.busy ? <i className="fas fa-spinner"></i> : <></>}
       </button>
     );
@@ -242,7 +242,7 @@ class CartCounter extends React.Component {
         // push mutates
         cartItems.push(productId);
         this.setState({
-          cartItems: cartItems,
+          cartItems,
           cartItemsCount: this.state.cartItemsCount + 1,
         });
         break;
@@ -290,8 +290,56 @@ class WishlistCounter extends React.Component {
     itemCount: 0,
   };
 
+  wishlistAction = (event) => {
+    const { detail, type: eventType } = event;
+    const { productId } = detail;
+
+    if (eventType === ADD_TO_WL_EVENT) {
+      //slice clones
+      const items = this.state.items.slice();
+      items.push(productId);
+
+      this.setState({
+        items,
+        itemCount: this.state.itemCount + 1,
+      });
+
+      return;
+    }
+
+    if (eventType === REMOVE_FROM_WL_EVENT) {
+      this.setState({
+        items: this.state.items.filter((productId) => {
+          return productId !== detail.productId;
+        }),
+        itemCount: this.state.itemCount - 1,
+      });
+
+      return;
+    }
+  };
+
+  componentDidMount() {
+    addEventListener(ADD_TO_WL_EVENT, this.wishlistAction);
+    addEventListener(REMOVE_FROM_WL_EVENT, this.wishlistAction);
+  }
+
   render() {
-    return 'das';
+    return (
+      <div
+        className="header-counter"
+        onClick={() => {
+          alert(this.state.items);
+        }}
+      >
+        {this.state.itemCount > 0 ? (
+          <span className="qty">{this.state.itemCount}</span>
+        ) : (
+          <></>
+        )}
+        <i className="fas fa-heart icon"></i>
+      </div>
+    );
   }
 }
 
@@ -303,7 +351,5 @@ class HeaderCounters extends React.Component {
 }
 
 const headerCounters = document.querySelector('.header-counters');
-const root = ReactDOM.createRoot(headerCounters).render(
-  <HeaderCounters></HeaderCounters>,
-);
+const root = ReactDOM.createRoot(headerCounters);
 root.render(<HeaderCounters></HeaderCounters>);

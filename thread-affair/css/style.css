@@ -250,7 +250,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1284px;
   margin: 0 auto;
 }
 
@@ -311,12 +311,17 @@ a {
   margin-right: 10px;
 }
 
-.header-cart {
+.header-counters {
+  display: flex;
+  gap: 16px;
+}
+
+.header-counter {
   position: relative;
   margin-top: 6px;
 }
 
-.header-cart .icon {
+.header-counter .icon {
   font-size: 30px;
 }
 
@@ -546,7 +551,7 @@ a {
 }
 
 .product-tile .product-control:hover,
-.product-tile .product-control.in-cart {
+.product-tile .product-control.added {
   color: #fff;
   background-color: #ff6b6b;
 }
@@ -646,11 +651,6 @@ a {
   min-height: 150px;
 }
 
-.home-newsletter .form-message {
-  width: 100%;
-  text-align: center;
-}
-
 .home-newsletter [for='field-newsletter'] {
   font-size: 14px;
   text-transform: uppercase;
@@ -685,6 +685,11 @@ a {
   height: 60px;
   background: url('./../images/icons/mail-send.png') no-repeat center right;
   background-size: 65px;
+}
+
+.home-newsletter .form-message {
+  width: 100%;
+  text-align: center;
 }
 
 .footer-top {
