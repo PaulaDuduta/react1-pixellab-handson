@@ -4,7 +4,6 @@ const ADD_TO_WL_EVENT = 'wl/productAdded';
 const REMOVE_FROM_WL_EVENT = 'wl/productRemoved';
 
 class NewsletterForm extends React.Component {
-  // state v1
   state = {
     email: '',
     formMessage: '',
@@ -22,7 +21,7 @@ class NewsletterForm extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    // event.target['field-newsletter'].value
+
     const email = this.state.email;
 
     this.setState({
@@ -46,14 +45,12 @@ class NewsletterForm extends React.Component {
         busy: false,
         email: '',
         submitted: true,
-        successMessage: `${this.state.email} subscrbied!`,
+        successMessage: `${this.state.email} submitted!`,
       });
     }, 3000);
   };
 
   onInputChange = (event) => {
-    // currentTarget -> elementul pe care am pus eventul
-    // target -> elementul de pe care a plecat eventul
     const email = event.target.value;
 
     this.setState({
@@ -63,34 +60,48 @@ class NewsletterForm extends React.Component {
 
   render() {
     if (this.state.submitted) {
-      return <div className="container">{this.state.successMessage}</div>;
+      return (
+        <div className="container success-subscribed-msg">
+          {this.state.successMessage}
+        </div>
+      );
     }
 
     return (
-      <form className="form-newsletter container" onSubmit={this.onSubmit}>
-        <label htmlFor="field-newsletter">
-          Subscribe to our <span>newsletter</span>
-        </label>
+      <form
+        action=""
+        className="form-newsletter container"
+        onSubmit={this.onSubmit}
+      >
+        <label htmlFor="email-newsletter">sign up for our newsletter</label>
         <input
           type="text"
-          name="field-newsletter"
-          id="field-newsletter"
+          name="email-newsletter"
+          id="email-newsletter"
           value={this.state.email}
           onChange={this.onInputChange}
-          placeholder="enter your email address to receive the latest news!"
+          placeholder="email..."
         ></input>
-        <button type="submit">
-          {this.state.busy ? '...loading' : 'Subscribe'}
-        </button>
 
         <div className="form-message">{this.state.formMessage}</div>
+
+        <button type="submit">
+          <img
+            src="images/Spinner.svg"
+            alt="Loading"
+            className={this.state.busy ? 'spinner' : 'd-none'}
+          ></img>
+
+          {this.state.busy ? 'Loading' : 'Subscribe'}
+        </button>
       </form>
     );
   }
 }
 
-const newsletterContainer = document.querySelector('.home-newsletter');
-// mount react the good way
+const newsletterContainer = document.querySelector(
+  '.footer-sign-up-newsletter',
+);
 ReactDOM.createRoot(newsletterContainer).render(
   <NewsletterForm></NewsletterForm>,
 );
@@ -133,26 +144,27 @@ class AddToCartButton extends React.Component {
     const productInCart = this.state.inCart;
 
     return (
-      <button
+      <a
         onClick={this.onClick}
-        type="button"
-        title={`${productInCart ? 'Remove' : 'Add'} product to cart`}
+        href="#"
         className={`product-control ${productInCart ? 'added' : ''}`}
+        title={`${productInCart ? 'Remove from' : 'Add to'} cart`}
         disabled={this.state.busy}
       >
-        {productInCart
-          ? `Product ${this.props.productId} in cart`
-          : 'Add to cart'}
-        {this.state.busy ? <i className="fas fa-spinner"></i> : <></>}
-      </button>
+        {this.state.inCart ? (
+          <i class="far fa-minus-square"></i>
+        ) : (
+          <i className="far fa-plus-square"></i>
+        )}
+      </a>
     );
   }
 }
 
 class AddToWishlistButton extends React.Component {
   state = {
-    inWl: false,
     busy: false,
+    inWl: false,
   };
 
   onClick = () => {
@@ -176,25 +188,26 @@ class AddToWishlistButton extends React.Component {
         busy: false,
         inWl: !this.state.inWl,
       });
-    }, 6000);
+    }, 2000);
   };
 
   render() {
     const productInWl = this.state.inWl;
 
     return (
-      <button
+      <a
         onClick={this.onClick}
-        type="button"
-        title={`${productInWl ? 'Remove' : 'Add'} product to wishlist`}
+        href="#"
+        title={`${productInWl ? 'Remove from' : 'Add to'} Wishlist`}
         className={`product-control ${productInWl ? 'added' : ''}`}
         disabled={this.state.busy}
       >
-        {productInWl
-          ? `Product ${this.props.productId} in wl`
-          : 'Add to wishlist'}
-        {this.state.busy ? <i className="fas fa-spinner"></i> : <></>}
-      </button>
+        {productInWl ? (
+          <i className="fas fa-heart"></i>
+        ) : (
+          <i className="far fa-heart"></i>
+        )}
+      </a>
     );
   }
 }
@@ -211,6 +224,7 @@ class ProductTileControls extends React.Component {
     );
   }
 }
+
 const productTileControls = document.querySelectorAll('.product-tile-controls');
 productTileControls.forEach((productTileControl, index) => {
   ReactDOM.createRoot(productTileControl).render(
@@ -219,28 +233,25 @@ productTileControls.forEach((productTileControl, index) => {
 });
 
 class CartCounter extends React.Component {
-  // never update state directly
   state = {
     cartItemsCount: 0,
-    cartItems: [], // array cu ids
+    cartItems: [],
   };
 
   productCartAction = (event) => {
     const { detail, type: eventType } = event;
     const { productId } = detail;
-    // no mutating state:
-    // slice clones
     const cartItems = this.state.cartItems.slice();
 
     switch (eventType) {
       case ADD_TO_CART_EVENT:
-        // push mutates
         cartItems.push(productId);
         this.setState({
           cartItems,
           cartItemsCount: this.state.cartItemsCount + 1,
         });
         break;
+
       case REMOVE_FROM_CART_EVENT:
         this.setState({
           cartItemsCount: this.state.cartItemsCount - 1,
@@ -253,7 +264,6 @@ class CartCounter extends React.Component {
   };
 
   componentDidMount() {
-    // DOM
     addEventListener(ADD_TO_CART_EVENT, this.productCartAction);
     addEventListener(REMOVE_FROM_CART_EVENT, this.productCartAction);
   }
@@ -271,7 +281,7 @@ class CartCounter extends React.Component {
         ) : (
           <></>
         )}
-        <i className="fas fa-shopping-cart icon"></i>
+        <i className="fas fa-shopping-bag"></i>
       </div>
     );
   }
@@ -280,7 +290,7 @@ class CartCounter extends React.Component {
 class WishlistCounter extends React.Component {
   state = {
     items: [],
-    itemCount: 0,
+    itemsCount: 0,
   };
 
   wishlistAction = (event) => {
@@ -288,13 +298,12 @@ class WishlistCounter extends React.Component {
     const { productId } = detail;
 
     if (eventType === ADD_TO_WL_EVENT) {
-      // slice clones
       const items = this.state.items.slice();
       items.push(productId);
 
       this.setState({
         items,
-        itemCount: this.state.itemCount + 1,
+        itemsCount: this.state.itemsCount + 1,
       });
 
       return;
@@ -302,11 +311,10 @@ class WishlistCounter extends React.Component {
 
     if (eventType === REMOVE_FROM_WL_EVENT) {
       this.setState({
-        // filter clones
         items: this.state.items.filter((productId) => {
           return productId !== detail.productId;
         }),
-        itemCount: this.state.itemCount - 1,
+        itemsCount: this.state.itemsCount - 1,
       });
 
       return;
@@ -326,12 +334,12 @@ class WishlistCounter extends React.Component {
           alert(this.state.items);
         }}
       >
-        {this.state.itemCount > 0 ? (
-          <span className="qty">{this.state.itemCount}</span>
+        {this.state.itemsCount > 0 ? (
+          <span className="qty">{this.state.itemsCount}</span>
         ) : (
           <></>
         )}
-        <i className="fas fa-heart icon"></i>
+        <i className="far fa-heart"></i>
       </div>
     );
   }
