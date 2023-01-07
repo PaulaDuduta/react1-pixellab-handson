@@ -20,10 +20,6 @@ export default (message = '', type = 'success') => {
 
   messageContainer.append(closeButton);
 
-  closeButton.addEventListener('click', () => {
-    closeButton.parentNode.remove(messageContainer);
-  });
-
   setTimeout(() => {
     closeButton.parentNode.remove(messageContainer);
   }, 2000);
