@@ -176,7 +176,7 @@ class AddToWishlistButton extends React.Component {
         busy: false,
         inWl: !this.state.inWl,
       });
-    }, 6000);
+    }, 2000);
   };
 
   render() {
